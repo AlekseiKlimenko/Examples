@@ -344,106 +344,7 @@ angular.module('gameApp').controller('mainCtrl', ['$scope','$rootScope','$timeou
 
 		}
 	};
-
-	// deposit card
-	// var canBetCard = function() {
-	// 	if ($scope.currentGame.tradeoffers.length == 0) {
-	// 		return true;
-	// 	}
-
-	// 	var usersWithCards = [];
-	// 	for (var i = 0; i < $scope.currentGame.tradeoffers.length; i++) {
-	// 		if ($scope.currentGame.tradeoffers[i].items_to_receive[0].description.type == "Card") {
-	// 			usersWithCards.push($scope.currentGame.tradeoffers[i].user.steamid);
-	// 		}
-	// 	}
-
-	// 	return usersWithCards.indexOf($scope.auth.steamid) == -1;
-	// }
-
-	// $scope.depositCard = function(type) {
-	// 	// check if user can bet the card
-	// 	if (!canBetCard()) {
-	// 		$translate('CARDS_ERROR_ONLY_ONE').then(function(message){
-	// 			ngNotify.set(message, 'error');
-
-	// 		}, function(err){
-	// 			ngNotify.set('Only one card in each game', 'error');
-	// 		});
-
-	// 		return;
-	// 	}
-
-	// 	// if custom value 
-	// 	// @todo
-
-	// 	// check if exists
-	// 	if (angular.isUndefined($scope.infConfig.cards[type])) {
-	// 		$translate('ERROR_BAD_REQUEST').then(function(message){
-	// 			ngNotify.set(message, 'error');
-
-	// 		}, function(err){
-	// 			ngNotify.set('Please try again later', 'error');
-	// 		});
-
-	// 		return;
-	// 	}
-
-	// 	var price = $scope.infConfig.cards[type].price;
-
-	// 	// check auth
-	// 	if (! $scope.auth) {
-	// 		$scope.authWarning = true;
-	// 		$scope.openAuthPopup();
-	// 		return;
-	// 	}
-
-	// 	// check trade-link
-	// 	if (!$scope.auth.tradelink) {
-	// 		$scope.openTradeLinkPopup();
-	// 		return;
-	// 	}
-
-	// 	// check balance on the front-end
-	// 	if (!balance.check(price * $scope.infConfig.rate)) {
-	// 		$scope.balanceWarning = true;
-	// 		$scope.openBalanceDepositPopup();
-
-	// 		return;
-	// 	}
-
-	// 	// check currentGame status
-	// 	if ($scope.currentGame.status == 'WAIT' || $scope.currentGame.status == 'ROULETTE' || $scope.currentGame.status == 'FINISHED' || $scope.informer.isPause) {
-
-	// 		$translate('CARDS_ERROR_PAUSE').then(function(message){
-	// 			ngNotify.set(message, 'error');
-
-	// 		}, function(err){
-	// 			ngNotify.set('Game is paused', 'error');
-	// 		});
-
-	// 		return;
-	// 	}
-
-	// 	$scope.socket_cs.emit('bet-card', { type : type });
-
-	// 	$scope.socket_cs.on('bet-card-error', function(data){
-	// 		if (data.error == 'ERROR_LOW_BALANCE') {
-	// 			$scope.balanceWarning = true;
-	// 			$scope.openBalanceDepositPopup();
-
-	// 			return;
-	// 		}
-
-	// 		$translate(data.error).then(function(message){
-	// 			ngNotify.set(message, 'error');
-
-	// 		}, function(err){
-	// 			ngNotify.set(data.error, 'error');
-	// 		});
-	// 	});
-	// };
-
+	
 	$scope.changeLanguage = function (key) {
 		$translate.use(key);
 		$scope.lang = key;
@@ -523,13 +424,7 @@ angular.module('gameApp').controller('mainCtrl', ['$scope','$rootScope','$timeou
 		});
 	};
 	$scope.validBalanceDeposite = function(deposite,validDeposit){ 
-		// if (isNaN(parseInt(deposite)) || deposite == undefined){
-		// 	return
-		// }else{
-		// 	window.location.href = "/app/payment.php?action=pay&sum="+deposite
-		// }
 		if(validDeposit.$valid){
-			// console.log("valid true");
 			window.location.href = "/app/payment.php?action=pay&sum="+deposite
 		}
 	}

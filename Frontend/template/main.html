@@ -1,32 +1,47 @@
-<div class="wp-central-content page-home">
+<div class="game-menu-new">
 	
-   
-	<div class="pause-msg" ng-if="informer.isPause">{{'BOT_STOP' | translate}}</div> <!-- Бот приостановлен. -->
-
-	<!-- CARDS -->
-	<div class="wrapper-cards">
-		<div class="cards-description">
-			<p class="wrapper-cards-description">{{ 'CARDS_DESCRIPTION' | translate }}</p>
-			<div class="balance">
-				<p ng-if="auth">
-					{{ 'BALANCE' | translate }}: {{balance | convertPrice : rates[lang] | number : 1}} {{currency}}<span class="deposit" ng-click="openBalanceDepositPopup()">
-					<a class="dropp"><span>{{ 'BALANCE_DEPOSIT' | translate }}</span></a></span>
-				</p>
+	<div class="game-menu-new-tab">
+		<a href="/#/" ng-class="{'active':localActiveMenu == '#/'}" >
+			<div class="header-main-jack-item">
+				<p class="main-text">{{'TEXT_94' | translate}}</p>
+				<div class="main-sum" ng-show="currentGame.tradeoffers[currentGame.tradeoffers.length-1].total > 0">+{{currentGame.tradeoffers[currentGame.tradeoffers.length-1].total | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}</div>
+				</div>
+				<div class="header-main-jack-item">
+					<p class="text">{{'IN_GAME' | translate}}:</p>
+					<div class="sum">{{currentGame.jackpot | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}</div>
+					<div style="clear:both;"></div>
 			</div>
-		</div>
-		<div class="clear"></div>
+		</a> 
 	</div>
 
+	<div class="game-menu-new-tab">
+		<a href="/#/double" class="header-main-jack red" ng-class="{'active':localActiveMenu == '#/double'}" >
+			<div class="header-main-jack-item">
+				<p class="main-text">Double</p>
+				<div class="main-sum" ng-if="gamesRate[0].rate.points > 0">+{{gamesRate[0].rate.points * 100 | number }}</div>
+			</div>
+			<div class="header-main-jack-item">
+				<p class="text">{{'IN_GAME' | translate}}:</p>
+				<div class="sum" ng-if="gamesRate[0].rate.points > 0">{{gamesRate[0].jackpot | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</a>
+	</div>
+
+	<div style="clear:both;"></div>
+</div>
+
+<div class="wp-central-content page-home">
+	<div class="pause-msg" ng-if="informer.isPause == true && informer.isPauseBot.mode == 'jackpot' ">{{'BOT_STOP' | translate}}</div>
 	<!-- GAME -->
 	<div class="wrapper-main-game">
-		<div class="wrapper-main-game-title">
-			<p class="wrapper-main-game-title-i">{{'GAME_NUMBER' | translate}} #<span>{{currentGame.id}}</span></p> 
-		</div>
-		
 		<div class="wrapper-main-game-title-bank">
-			{{'BANK' | translate}} {{currentGame.jackpot | convertPrice : rates[lang] | number : 2}}<span> {{currency}}</span>
-		</div>
+			<p class="wrapper-main-game-title-i">{{'GAME_NUMBER' | translate}} #<span style="color:#d63231">{{currentGame.id}}</span></p> <!-- ИГРА -->
 
+			{{'BANK' | translate}} <span  style="color:#d63231">{{currentGame.jackpot | convertPrice : rates[lang] | number : 2}}</span><span style="color:#d63231"> {{currency}}</span> <!-- БАНК -->
+		</div>
+	
 		<div class="wrapper-progressbar-timer">
 			<div class="wp-progressbar">
 				<div class="wp-loader-i"></div>
@@ -87,14 +102,15 @@
 			</ks-swiper-slide>
 		</ks-swiper-container>
 
-		<div class="wrapper-last-winner">
+
+ 		<div class="wrapper-last-winner">
 			<div class="wrapper-last-winner-description">
 				<p>{{'SIDEBAR_LAST_WINNER' | translate}}</p>
 			</div>
 
 			<div class="wrapper-last-winner-icon"><a href="{{lastWinner.user.profileurl}}"><img ng-src="{{lastWinner.user.avatarmedium}}"></a></div>
 
-			<div class="wrapper-last-winner-chance name">
+			<div class="wrapper-last-winner-chance name name-adaptiv">
 				<p class="last-winner-chance-title">{{'NAME' | translate}}:</p>
 				<p class="last-winner-chance-sum"><span class="user-name">{{lastWinner.user.personaname | parseNick }}</span></p>
 			</div>
@@ -109,19 +125,19 @@
 				<p class="last-winner-chance-sum"><span>{{lastWinner.chance*100 | number: 2}}</span>%</p>
 			</div>
 		</div>
-		
+ 		
+
 		<div class="set-items nologin" ng-if="auth === false">
 			<div class="try-luck">
 				<p class="try-title">{{'EXPERIENCE_YOUR_CHANCE' | translate}}</p> <!-- ИСПЫТАЙ СВОЙ ШАНС -->
 				<p class="enter-in-game">{{'JOIN_GAME' | translate}}</p><!-- вступи в игру -->
 			</div>
 			<div class="arrows-enter">
-				<img src="img/arrow-up.png" alt="arrow-up" class="arrow-up">
-				<img src="img/arrow-down.png" alt="arrow-down" class="arrow-down">
+				<img src="/img/arrow-up.png" alt="arrow-up" class="arrow-up">
+				<img src="/img/arrow-down.png" alt="arrow-down" class="arrow-down">
 			</div>
 			
 			<a class="lets-go enter-player" ng-if="!auth" href="/auth.php?action=login">{{'JOIN_THE_GAME' | translate}}</a>
-			<a class="lets-go enter-player" ng-if="auth" href="">{{'JOIN_THE_GAME' | translate}}</a>
 		</div>
 		
 		<div class="set-items nologin" ng-if="auth !== false && !loggedUser">
@@ -130,11 +146,11 @@
 				<p class="enter-in-game">{{'JOIN_GAME' | translate}}</p>
 			</div>
 			<div class="arrows-enter">
-				<img src="img/arrow-up.png" alt="arrow-up" class="arrow-up">
-				<img src="img/arrow-down.png" alt="arrow-down" class="arrow-down">
+				<img src="/img/arrow-up.png" alt="arrow-up" class="arrow-up">
+				<img src="/img/arrow-down.png" alt="arrow-down" class="arrow-down">
 			</div>
 			
-			<a class="lets-go enter-player" ng-click="openMakeDepositModal()">{{'MAKE_DEPOSIT' | translate}}</a> 
+			<a class="lets-go enter-player" ng-click="checkTradelink()" ng-href="{{ auth.tradelink.length ? infConfig.tradelink : '' }}" target="_blank">{{'MAKE_DEPOSIT' | translate}}</a> <!-- ВСТУПИТЬ В ИГРУ -->
 		</div>
 		
 		<div class="set-items" ng-if="auth !== false && loggedUser" ng-repeat="user in currentGame.users | filter:{steamid: auth.steamid}">
@@ -152,10 +168,20 @@
 
 		<div class="wrapper-color-block color-block2">{{'TAKE' | translate}} <a href="http://steamcommunity.com/id/xxx/tradeoffers/" class="now-get" target="_blank">{{'TAKE_0' | translate}}</a> {{'TAKE_0_1' | translate}} {{'TEXT_0' | translate}}</div>
 
-		<div class="wrapper-color-block color-block3">{{'TEXT_1' | translate}} <span ng-if="infConfig.minDeposite == 0">{{'ABSENT' | translate}}</span><span ng-if="infConfig.minDeposite > 0">{{infConfig.minDeposite}} {{currency}}</span>. {{'TEXT_2' | translate}} {{infConfig.maxUsersItems}} {{ bid.items_to_receive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate}}.</div>   
+		<div class="wrapper-color-block color-block3">{{'TEXT_1' | translate}} <span ng-if="infConfig.minDeposite == 0">{{'ABSENT' | translate}}</span><span ng-if="infConfig.minDeposite > 0">{{infConfig.minDeposite}} {{currency}}</span>. {{'TEXT_2' | translate}} {{infConfig.maxUsersItems}} {{ bid.itemsToReceive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate}}.</div>   
 
 		<div class="game-end" ng-if="currentGame.status == 'FINISHED'">
+		<form action="https://api.random.org/verify" method="post" target="_blank" id="random-form">
+             <input type="hidden" name="format" value="json">
+             <input type="hidden" name="random" value='{{lastGame.randomOrg}}'>
+             <input type="hidden" name="signature" value="{{lastGame.signature}}">
+              
+		</form>
 			<p class="end-title">{{'FINISH' | translate}}</p>
+			<p class="number-round"><span>{{'CHECK_WINNER_RANDOM' | translate}}</span>&nbsp
+			 	<a class="fair-game-link random-link" href="#" onclick="$('#random-form').submit(); return false;">{{"CHECK_RANDOM_BUTTON" | translate}}</a>
+			</p>
+			<!-- @todo clearGame -->
 		</div> 
 
 		<div class="game-now-ending" ng-if="currentGame.status == 'WAIT' || currentGame.status == 'ROULETTE'">
@@ -171,34 +197,33 @@
 						<div class="wrapper-profile-item-main-page-item-left">
 							
 
-							<div class="profile-item-main-page-i-nickname"><a href="http://steamcommunity.com/profiles/{{bid.steamid_other}}" target="_blank">{{ bid.user.personaname | parseNick }}</a></div> 
+							<div class="profile-item-main-page-i-nickname"><a href="{{bid.user.profileurl}}" target="_blank">{{ (auth.isAdmin == "admin" && bid.fake ? "[BOT]" : "") }}{{ bid.user.personaname | parseNick }}</a></div> 
 
 							<div class="profile-item-main-page-i-chance"><span class="profile-item-main-page-i-chance-text">{{'CHANCE' | translate}}</span><span class="profile-item-main-page-i-chance-number" ng-repeat="user in currentGame.users | filter:{steamid: bid.steamid_other}">{{user.chance*100 | number : 2}}</span>%</div>,
-							<div class="profile-item-main-page-i-number-skins"><span>{{bid.items_to_receive.length}}</span> {{ bid.items_to_receive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate }},</div>
+							<div class="profile-item-main-page-i-number-skins"><span>{{bid.itemsToReceive.length}}</span> {{ bid.itemsToReceive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate }},</div>
 							<div class="profile-item-main-page-i-sum"><span>{{bid.total | convertPrice : rates[lang] | number: 2}}</span> {{currency}}</div>
 						</div>
 					</div>
 
 					<div class="profile-item-main-page-i-ticket">{{'TICKET' | translate}}: <span class="profile-item-main-page-i-chance-number">{{'FROMTO' | translate}}</span> #{{bid.fTicket}} <span class="profile-item-main-page-i-chance-number">{{'TO' | translate}}</span> #{{bid.lTicket}}</div>
-
-					
 				</div>
+
 				<div class="clear"></div>
 
 				<div class="wrapper-list-item-main-page-skins">
-					<div class="list-item-main-page-skins-i" ng-repeat="item in bid.items_to_receive | toArray | orderBy: '-price'" style="border:1px solid {{ item.description.background_color }};">
-						<a class="history-item-prize" data-image="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" data-title="{{ item.description.name }}" data-price="~ {{ item.price | number : 2 }}" style="position:relative;" ng-if="item.classid != -123456">
-							<img class="inner-images" ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+					<div class="list-item-main-page-skins-i" ng-repeat="item in bid.itemsToReceive | toArray | orderBy: '-price'" style="border:1px solid {{ item.background_color }};">
+						<a class="history-item-prize" data-image="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.icon_url }}/85fx70f" data-title="{{ item.name }}" data-price="~ {{ item.price | number : 2 }}" style="position:relative;" ng-if="item.classid != -123456">
+							<img class="inner-images" ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.icon_url }}/85fx70f" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
 
 							<div ng-show="hoverEdit" class="history-item-prize-drop" style="display: block;"> 
 								<div class="history-item-prize-drop-top">
-									<div class="history-item-prize-drop-left" style="background: {{ item.description.background_color }};">
+									<div class="history-item-prize-drop-left" style="background: {{ item.background_color }};">
 										<div class="history-item-prize-drop-image">
-											<img ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" alt="image">
+											<img ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.icon_url }}/85fx70f" alt="image">
 										</div>
 									</div>
 									<div class="history-item-prize-drop-top-inner">
-										<div class="history-item-prize-drop-title">{{ item.description.name }}</div>
+										<div class="history-item-prize-drop-title">{{ item.name }}</div>
 										<div class="history-item-prize-drop-price">~ {{ item.price | convertPrice : rates[lang] | number : 2 }} {{currency}}</div>
 									</div>
 								</div>
@@ -206,17 +231,17 @@
 						</a>
 
 						<a class="history-item-prize" style="position:relative;" ng-if="item.classid == -123456">
-							<img class="inner-images" ng-src="{{ item.description.icon_url }}" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+							<img class="inner-images" ng-src="{{ item.icon_url }}" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
 
 							<div ng-show="hoverEdit" class="history-item-prize-drop" style="display: block; top: -115px; left: -95px;">
 								<div class="history-item-prize-drop-top">
-									<div class="history-item-prize-drop-left" style="background: {{ item.description.background_color }};">
+									<div class="history-item-prize-drop-left" style="background: {{ item.background_color }};">
 										<div class="history-item-prize-drop-image">
-											<img ng-src="{{ item.description.icon_url }}" alt="image">
+											<img ng-src="{{ item.icon_url }}" alt="image">
 										</div>
 									</div>
 									<div class="history-item-prize-drop-top-inner">
-										<div class="history-item-prize-drop-title">{{ item.description.market_hash_name }}</div>
+										<div class="history-item-prize-drop-title">{{ item.market_hash_name }}</div>
 										<div class="history-item-prize-drop-price">~ {{ item.price | convertPrice : rates[lang] | number : 2 }} {{currency}}</div>
 									</div>
 								</div>
@@ -233,6 +258,9 @@
 			<img src="img/play.png" alt="play">
 
 			<p class="title">{{'TEXT_10' | translate}}</p>
+
+			<!-- @todo clearGame -->
+			<p class="randomLink">{{'RANDOM_SUPPORT' | translate}}&nbsp<a href="/#/fairplay" >{{'MORE' | translate}}</a></p>
 		</div>
 	</div>
 	<!-- /GAME -->
