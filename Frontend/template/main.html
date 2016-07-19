@@ -1,0 +1,239 @@
+<div class="wp-central-content page-home">
+	
+   
+	<div class="pause-msg" ng-if="informer.isPause">{{'BOT_STOP' | translate}}</div> <!-- Бот приостановлен. -->
+
+	<!-- CARDS -->
+	<div class="wrapper-cards">
+		<div class="cards-description">
+			<p class="wrapper-cards-description">{{ 'CARDS_DESCRIPTION' | translate }}</p>
+			<div class="balance">
+				<p ng-if="auth">
+					{{ 'BALANCE' | translate }}: {{balance | convertPrice : rates[lang] | number : 1}} {{currency}}<span class="deposit" ng-click="openBalanceDepositPopup()">
+					<a class="dropp"><span>{{ 'BALANCE_DEPOSIT' | translate }}</span></a></span>
+				</p>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<!-- GAME -->
+	<div class="wrapper-main-game">
+		<div class="wrapper-main-game-title">
+			<p class="wrapper-main-game-title-i">{{'GAME_NUMBER' | translate}} #<span>{{currentGame.id}}</span></p> 
+		</div>
+		
+		<div class="wrapper-main-game-title-bank">
+			{{'BANK' | translate}} {{currentGame.jackpot | convertPrice : rates[lang] | number : 2}}<span> {{currency}}</span>
+		</div>
+
+		<div class="wrapper-progressbar-timer">
+			<div class="wp-progressbar">
+				<div class="wp-loader-i"></div>
+				<div class="progressbar-text"><span>{{currentGame.items.length | number: 0}}</span> {{ (currentGame.items.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9']) | translate }} </div>
+				<div class="progressbar-value" style="width: {{currentGame.items.length | number: 0}}%;">
+					<div class="progressbar-stripes"></div>
+				</div>
+			</div>
+			<div class="wrapper-pointer"> 
+			   {{'OR_AFTER' | translate}} 
+			</div>
+
+			<div class="wp-timer-i">
+				<div class="timer countdownHolder gameEndTimer">
+					<timer interval="1000" countdown="{{timer}}">
+						<span class="countMinutes">
+							<span class="position digit">
+								{{mminutes | limitTo: 1}}
+							</span>
+							<span class="position digit">
+								{{mminutes | limitTo: -1}}
+							</span>
+						</span>
+						
+						<span class="countSeconds">
+							<span class="position digit">
+								{{sseconds | limitTo: 1}}
+							</span>
+							<span class="position digit">
+								{{sseconds | limitTo: -1}}
+							</span>
+						</span>
+					</timer>
+				</div>
+			</div>
+		</div>
+
+		<roulette  players="players" time="timeOfRoulette" winner="winner" ng-if="currentGame.status == 'ROULETTE' || currentGame.status == 'FINISHED'" sound="sound"></roulette>
+
+		<div class="game-info" ng-if="currentGame.status == 'ROULETTE' || currentGame.status == 'FINISHED'">
+			<div> 
+				<div class="game-end-winner">
+					<span class="game-end-winner-name">{{'PLAYER_WON' | translate}}: <strong>{{ winnerName | parseNick }}</strong></span><br/>
+					<span class="game-end-winner-chance">{{'TEXT_72' | translate}}: <strong>{{winnerChance}}</strong></span><br/>
+					<span class="game-end-winner-money">{{'TEXT_70' | translate}}: <strong class="winner-cost-value">{{ winnerJackpot }} {{ currency }}</strong></span>
+					<span class="arrow-wh-top"></span>
+					<span class="arrow-wh-top"></span>
+					<span class="arrow-wh-top"></span>
+
+					<div class="clearfix"></div>
+				</div> 
+			</div>
+		</div>
+
+		<ks-swiper-container initial-slide="10" loop="false" ng-if="currentGame.status === 'INPROGRESS' || currentGame.status === 'WAIT'" show-nav-buttons="true" slides-per-view="0" space-between="0" pagination-clickable="false" class="customers players-percent">
+			<ks-swiper-slide class="swiper-slide customer" style="background-image:url({{getUserImg(user.steamid)}});" ng-repeat="user in currentGame.users | orderBy:'-chance'">
+				<span class="probability perc">{{user.chance*100 | number : 2}}</span>
+			</ks-swiper-slide>
+		</ks-swiper-container>
+
+		<div class="wrapper-last-winner">
+			<div class="wrapper-last-winner-description">
+				<p>{{'SIDEBAR_LAST_WINNER' | translate}}</p>
+			</div>
+
+			<div class="wrapper-last-winner-icon"><a href="{{lastWinner.user.profileurl}}"><img ng-src="{{lastWinner.user.avatarmedium}}"></a></div>
+
+			<div class="wrapper-last-winner-chance name">
+				<p class="last-winner-chance-title">{{'NAME' | translate}}:</p>
+				<p class="last-winner-chance-sum"><span class="user-name">{{lastWinner.user.personaname | parseNick }}</span></p>
+			</div>
+
+			<div class="wrapper-last-winner-winnings">
+				<p class="last-winner-winnings-title">{{'SIDEBAR_LAST_WINNER_MONEY' | translate}}</p>
+				<p class="last-winner-winnings-sum"><span>{{lastWinner.jackpot | convertPrice : rates[lang] | number :2}}</span> {{currency}}</p>
+			</div>
+
+			<div class="wrapper-last-winner-chance">
+				<p class="last-winner-chance-title">{{'SIDEBAR_LAST_WINNER_CHANCE' | translate}}</p>
+				<p class="last-winner-chance-sum"><span>{{lastWinner.chance*100 | number: 2}}</span>%</p>
+			</div>
+		</div>
+		
+		<div class="set-items nologin" ng-if="auth === false">
+			<div class="try-luck">
+				<p class="try-title">{{'EXPERIENCE_YOUR_CHANCE' | translate}}</p> <!-- ИСПЫТАЙ СВОЙ ШАНС -->
+				<p class="enter-in-game">{{'JOIN_GAME' | translate}}</p><!-- вступи в игру -->
+			</div>
+			<div class="arrows-enter">
+				<img src="img/arrow-up.png" alt="arrow-up" class="arrow-up">
+				<img src="img/arrow-down.png" alt="arrow-down" class="arrow-down">
+			</div>
+			
+			<a class="lets-go enter-player" ng-if="!auth" href="/auth.php?action=login">{{'JOIN_THE_GAME' | translate}}</a>
+			<a class="lets-go enter-player" ng-if="auth" href="">{{'JOIN_THE_GAME' | translate}}</a>
+		</div>
+		
+		<div class="set-items nologin" ng-if="auth !== false && !loggedUser">
+			<div class="try-luck">
+				<p class="try-title">{{'EXPERIENCE_YOUR_CHANCE' | translate}}</p>
+				<p class="enter-in-game">{{'JOIN_GAME' | translate}}</p>
+			</div>
+			<div class="arrows-enter">
+				<img src="img/arrow-up.png" alt="arrow-up" class="arrow-up">
+				<img src="img/arrow-down.png" alt="arrow-down" class="arrow-down">
+			</div>
+			
+			<a class="lets-go enter-player" ng-click="openMakeDepositModal()">{{'MAKE_DEPOSIT' | translate}}</a> 
+		</div>
+		
+		<div class="set-items" ng-if="auth !== false && loggedUser" ng-repeat="user in currentGame.users | filter:{steamid: auth.steamid}">
+			<div class="your-sets">
+				<p>{{user.itemsCnt}} {{'FROM' | translate}} 20</p>
+				<p>{{'YOUR_BANK' | translate}}</p>
+			</div>
+			<div class="your-chance">
+				<span>{{'YOUR_CHANCE' | translate}}: {{user.chance*100 | number : 2}}%</span>
+			</div>
+			<a class="lets-go"href="{{infConfig.tradelink}}" target="_blank">{{'JOIN_THE_GAME' | translate}}</a>
+		</div>
+		
+		<div class="wrapper-color-block color-block1"><a href="http://steamcommunity.com/id/xx/edit" class="add-link" target="_blank">{{'ADD' | translate}}</a> {{'ADD_CSGOIN' | translate}}</div>
+
+		<div class="wrapper-color-block color-block2">{{'TAKE' | translate}} <a href="http://steamcommunity.com/id/xxx/tradeoffers/" class="now-get" target="_blank">{{'TAKE_0' | translate}}</a> {{'TAKE_0_1' | translate}} {{'TEXT_0' | translate}}</div>
+
+		<div class="wrapper-color-block color-block3">{{'TEXT_1' | translate}} <span ng-if="infConfig.minDeposite == 0">{{'ABSENT' | translate}}</span><span ng-if="infConfig.minDeposite > 0">{{infConfig.minDeposite}} {{currency}}</span>. {{'TEXT_2' | translate}} {{infConfig.maxUsersItems}} {{ bid.items_to_receive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate}}.</div>   
+
+		<div class="game-end" ng-if="currentGame.status == 'FINISHED'">
+			<p class="end-title">{{'FINISH' | translate}}</p>
+		</div> 
+
+		<div class="game-now-ending" ng-if="currentGame.status == 'WAIT' || currentGame.status == 'ROULETTE'">
+			<p class="end-title">{{'OVER' | translate}}</p>
+			<p class="number-round">{{'LATEST_RATES' | translate}}</p>
+		</div>   
+
+		<div class="wrapper-profile-item-main-page">
+			<div class="profile-item-main-page-i profile-item-main-active" ng-repeat="bid in currentGame.tradeoffers | orderBy:'-_id'">
+				<div class="wrapper-profile-item-main-page-item">
+					<div class="wrapper-profile-item-main-page-item-left-item">
+						<div class="profile-item-main-page-i-ico"><a href=""><img ng-src="{{bid.user.avatarfull}}"></a></div>
+						<div class="wrapper-profile-item-main-page-item-left">
+							
+
+							<div class="profile-item-main-page-i-nickname"><a href="http://steamcommunity.com/profiles/{{bid.steamid_other}}" target="_blank">{{ bid.user.personaname | parseNick }}</a></div> 
+
+							<div class="profile-item-main-page-i-chance"><span class="profile-item-main-page-i-chance-text">{{'CHANCE' | translate}}</span><span class="profile-item-main-page-i-chance-number" ng-repeat="user in currentGame.users | filter:{steamid: bid.steamid_other}">{{user.chance*100 | number : 2}}</span>%</div>,
+							<div class="profile-item-main-page-i-number-skins"><span>{{bid.items_to_receive.length}}</span> {{ bid.items_to_receive.length | num2str : ['ITEM', 'ITEM2', 'TEXT_9'] | translate }},</div>
+							<div class="profile-item-main-page-i-sum"><span>{{bid.total | convertPrice : rates[lang] | number: 2}}</span> {{currency}}</div>
+						</div>
+					</div>
+
+					<div class="profile-item-main-page-i-ticket">{{'TICKET' | translate}}: <span class="profile-item-main-page-i-chance-number">{{'FROMTO' | translate}}</span> #{{bid.fTicket}} <span class="profile-item-main-page-i-chance-number">{{'TO' | translate}}</span> #{{bid.lTicket}}</div>
+
+					
+				</div>
+				<div class="clear"></div>
+
+				<div class="wrapper-list-item-main-page-skins">
+					<div class="list-item-main-page-skins-i" ng-repeat="item in bid.items_to_receive | toArray | orderBy: '-price'" style="border:1px solid {{ item.description.background_color }};">
+						<a class="history-item-prize" data-image="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" data-title="{{ item.description.name }}" data-price="~ {{ item.price | number : 2 }}" style="position:relative;" ng-if="item.classid != -123456">
+							<img class="inner-images" ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+
+							<div ng-show="hoverEdit" class="history-item-prize-drop" style="display: block;"> 
+								<div class="history-item-prize-drop-top">
+									<div class="history-item-prize-drop-left" style="background: {{ item.description.background_color }};">
+										<div class="history-item-prize-drop-image">
+											<img ng-src="http://steamcommunity-a.akamaihd.net/economy/image/{{ item.description.icon_url }}/85fx70f" alt="image">
+										</div>
+									</div>
+									<div class="history-item-prize-drop-top-inner">
+										<div class="history-item-prize-drop-title">{{ item.description.name }}</div>
+										<div class="history-item-prize-drop-price">~ {{ item.price | convertPrice : rates[lang] | number : 2 }} {{currency}}</div>
+									</div>
+								</div>
+							</div>
+						</a>
+
+						<a class="history-item-prize" style="position:relative;" ng-if="item.classid == -123456">
+							<img class="inner-images" ng-src="{{ item.description.icon_url }}" alt="image" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+
+							<div ng-show="hoverEdit" class="history-item-prize-drop" style="display: block; top: -115px; left: -95px;">
+								<div class="history-item-prize-drop-top">
+									<div class="history-item-prize-drop-left" style="background: {{ item.description.background_color }};">
+										<div class="history-item-prize-drop-image">
+											<img ng-src="{{ item.description.icon_url }}" alt="image">
+										</div>
+									</div>
+									<div class="history-item-prize-drop-top-inner">
+										<div class="history-item-prize-drop-title">{{ item.description.market_hash_name }}</div>
+										<div class="history-item-prize-drop-price">~ {{ item.price | convertPrice : rates[lang] | number : 2 }} {{currency}}</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="banner-set">
+			<img src="img/play.png" alt="play">
+
+			<p class="title">{{'TEXT_10' | translate}}</p>
+		</div>
+	</div>
+	<!-- /GAME -->
+</div>

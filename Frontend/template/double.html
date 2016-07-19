@@ -1,0 +1,194 @@
+<div class="game-menu-new">
+	
+	<div class="game-menu-new-tab">
+		<a href="/#/" ng-class="{'active':localActiveMenu == '#/'}" >
+			<div class="header-main-jack-item">
+				<p class="main-text">{{'TEXT_94' | translate}}</p>
+				<div class="main-sum" ng-show="currentGame.tradeoffers[currentGame.tradeoffers.length-1].total > 0">+{{currentGame.tradeoffers[currentGame.tradeoffers.length-1].total | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}</div>
+				</div>
+				<div class="header-main-jack-item">
+					<p class="text">{{'IN_GAME' | translate}}:</p>
+					<div class="sum">{{currentGame.jackpot | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}</div>
+					<div style="clear:both;"></div>
+			</div>
+		</a> 
+	</div>
+
+	<div class="game-menu-new-tab">
+		<a href="/#/double" class="header-main-jack red" ng-class="{'active':localActiveMenu == '#/double'}" >
+			<div class="header-main-jack-item">
+				<p class="main-text">Double</p>
+				<div class="main-sum" ng-if="gamesRate[0].rate.points > 0">+{{gamesRate[0].rate.points * 100 | number}}</div>
+			</div>
+			<div class="header-main-jack-item">
+				<p class="text">{{'IN_GAME' | translate}}:</p>
+				<div class="sum" ng-if="gamesRate[0].rate.points > 0">{{gamesRate[0].jackpot | convertPrice : rates[lang] | number : 2}}&nbsp{{currency}}
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</a>
+	</div>
+
+	<div style="clear:both;"></div>
+</div>
+
+<div class="wp-central-content-double">
+	<div class="roulette">
+		<div class="roulette-main  title_2">
+			<double  start-roll="roulette.startRoll" end-time="roulette.endTime" number="fullWinningNumber"></double>
+			<ul class="victoriously_numbers">
+				<li ng-repeat="number in last track by $index" class="{{number | numberToResult|resultToString}}" height='20'> {{ (number.toString().split('.')[0]) }} 
+				</li>
+			</ul>
+		</div> 
+					
+		<div class="roulette-right">
+			<div class="balance">
+				<div class="balance-item"> 
+					<p>
+						{{'BALANCE'|translate}}: {{balance * 100 || 0 | number:0}}<span class="deposit" ng-click="openBalanceDepositPopup()">
+					</p>
+				</div>
+				<ul class="balance-list">
+					<li ng-click="setLastPoints()"><a class="return" href=""></a></li>
+					<li ng-click="clearPoints()"><a class="del" href=""></a></li> 
+					<li ng-click="addPoints(10)"><a href=""> +10  </a></li>
+					<li ng-click="addPoints(100)"><a href="">+100</a></li>
+					<li ng-click="addPoints(1000)"><a href=""> +1k </a></li>
+					<li ng-click="x2Points()"><a href=""> x2 </a></li>
+					<li ng-click="d2Points()"><a href=""> 1/2 </a></li>
+					<li ng-click="maxPoints()"><a href="">{{'MAX'|translate}}</a></li> 
+				</ul>
+				<div class="enter_amount">
+					<input type="text" placeholder="{{'BALANCE_POPUP_AMOUNT' | translate}}" ng-model="model.points">
+				</div>
+				<p class="roulette-text">{{'BET'|translate}}:</p>
+				<div class="roulette-buttons">
+				
+					<button ng-if="auth" class="red" ng-click="makeBet(1)" ng-disabled="!auth || roll.state === 2 || roll.state === 3">{{userBets.red | number:0}}<span>x2</span></button>
+					<button ng-if="auth"  class="green" ng-click="makeBet(3)" ng-disabled="!auth || roll.state === 2 || roll.state === 3">{{userBets.green | number:0}}<span>x14</span></button>
+					<button ng-if="auth"  class="black" ng-click="makeBet(2)" ng-disabled="!auth || roll.state === 2 || roll.state === 3">{{userBets.black | number:0}}<span>x2</span></button> 
+					<a ng-if="!auth" href="/auth.php?action=login"><button class="red" ng-click="makeBet(1)" >{{userBets.red | number:0}}<span>x2</span></button></a>
+					<a ng-if="!auth" href="/auth.php?action=login"><button class="green" ng-click="makeBet(3)" >{{userBets.green | number:0}}<span>x14</span></button></a>
+					<a ng-if="!auth" href="/auth.php?action=login"><button class="black" ng-click="makeBet(2)" >{{userBets.black | number:0}}<span>x2</span></button> </a>
+				</div>
+			</div>
+			<div class="general_rate">
+				<p class="roulette-text">{{'TOTAL_BET'|translate}}:</p>
+				<div class="rate">
+					<span class="red" style="width: {{roll.bets1 / totalBets * 100 || 0}}%"></span>
+					<p class="rate-item">{{roll.bets1 * 100 || 0 | number:0}} </p>
+				</div>
+
+				<div class="rate">
+					<span class="green" style="width: {{roll.bets3 / totalBets * 100 || 0}}%"></span>
+					<p class="rate-item"> {{roll.bets3 * 100 || 0 | number:0}} </p>
+				</div>
+
+				<div class="rate">
+					<span class="black" style="width: {{roll.bets2 / totalBets * 100 || 0}}%"></span>
+					<p class="rate-item">  {{roll.bets2 * 100 || 0 | number:0}} </p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="number_game">
+		<p  class="title_game">
+			{{'GAME_NUMBER' | translate}} №<span>{{currentGameDouble.id}}</span> 
+		</p>
+		<div  class="hash">
+			<p>{{'TEXT_12' | translate}} <span class="hash-item">{{currentGameDouble.clearGame.hash}} </span></p>
+			<p ng-show="roll.state !== 3">{{'TEXT_6' | translate}} <span> {{"TEXT_93" | translate}}</span></p>
+			<p ng-show="roll.state === 3">{{'TEXT_6' | translate}} <span> {{fullWinningNumber}}</span></p>
+		</div>
+		<a href="/#/fairplay" target="_blank"><button>{{'TEXT_5' | translate}}</button> </a>
+	</div>
+	<div class="stakes" ng-if="auth">
+		<div class="stake red" ng-click="makeBet(1)" ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item" >{{'FROMTO' | translate}} №1 {{'TO' | translate}} №7</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 1">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="stake green" ng-click="makeBet(3)" ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item">0</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 3">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="stake black" ng-click="makeBet(2)" ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item">{{'FROMTO' | translate}} №8 {{'TO' | translate}} №14</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 2">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div  ng-if="!auth" class="stakes">
+		<a  href="/auth.php?action=login"><div  class="stake red" ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item" >{{'FROMTO' | translate}} №1 {{'TO' | translate}} №7</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 1">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div></a>
+		<a  href="/auth.php?action=login"><div  class="stake green"  ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item">0</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 3">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div></a>
+		<a href="/auth.php?action=login"><div  class="stake black"  ng-disabled="!authData || roll.state === 2 || roll.state === 3">
+			<div class="stake-item">{{'FROMTO' | translate}} №8 {{'TO' | translate}} №14</div> 
+			<div class="users-rate">
+				<div class="user-rate" ng-repeat="bet in roll.bets" ng-if="bet.result === 2">
+					<div class="ava">
+						<img ng-src="{{bet.user.avatar}}"> 
+					</div>
+					<div class="users-nic">
+						<a class="nic" href="">{{bet.user.personaname}}</a>
+						<p><span>{{bet.points * 100 | number:0}}</span></p> 
+					</div>
+				</div>
+			</div>
+		</div></a>
+	</div>
+</div>
