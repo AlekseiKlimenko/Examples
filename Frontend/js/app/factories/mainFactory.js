@@ -17,7 +17,7 @@ angular.module('gameApp').factory('mainFactory', function () {
 	data.nmbrGames = 0;
 	data.nmbrThings = 0;
 	data.todayWinSumm = 0;
-	data.lastWinner={
+	data.lastWinner={    
 		ava: '',
 		name: '',
 		money:'',
