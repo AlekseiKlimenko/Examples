@@ -1,0 +1,359 @@
+html{
+  background: #fff;
+  width: 100%;
+  min-height: 100%;
+  font-family: 'Arimo', sans-serif;
+}
+
+body{
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  color: #555;
+  font-size: 0;
+  padding: 6% 0;
+}
+
+.slider{
+  display: inline-block;
+  width: 50%;
+  font-size: 16px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.content{
+  display: inline-block;
+  width: 50%;
+  font-size: 16px;
+  h1{
+    font-size: 1.7em;
+    margin: 0 0 6px 0;
+    letter-spacing: 0.3px;
+  }
+  p{
+    margin: 0;
+    font-style: italic;
+  }
+  .star_line{
+    margin-top: 26px;
+    .stars{
+      display: inline-block;
+      background: url(../img/stars.png) no-repeat;
+      padding: 8px 54px;
+    }
+    p{
+      display: inline-block;
+      vertical-align: top;
+    }
+    .number{
+      margin-right: 10px;
+      font-size: 0.813em;
+    }
+    .border_p{
+      border-right: 1px solid #cdcdcd;
+      padding-right: 16px;
+      letter-spacing: 1px;
+      font-size: 0.813em;
+    }
+    a{
+      padding: 7px 17px;
+      margin: 0 6px;
+    }
+    .facebook{
+      background: url(../img/facebook.png) no-repeat;
+      margin-left: 13px;
+      &:hover{
+        background: url(../img/facebook_hover.png) no-repeat;
+      }
+    }
+    .pint{
+      background: url(../img/pint.png) no-repeat;
+      &:hover{
+        background: url(../img/pint_hover.png) no-repeat;
+      }
+    }
+    .massage{
+      background: url(../img/massage.png) no-repeat;
+      &:hover{
+        background: url(../img/massage_hover.png) no-repeat;
+      }
+    }
+  }
+  .price{
+    border-top: 1px dashed #0065ab;
+    border-bottom: 1px dashed #0065ab;
+    color: #0065ab;
+    font-weight: 600;
+    font-size: 1.75em;
+    padding: 16px 0;
+    margin: 24px 0;
+    display: inherit;
+  }
+  .product{
+    color: #555;
+    letter-spacing: 0.6px;
+  }
+  .dia{
+    color: #b12c30;
+    font-style: normal;
+    font-size: 0.875em;
+    margin: 10px 0 26px 0;
+  }
+  .select{
+    display: inline-block;
+    width: 121px;
+    font-style: normal;
+  }
+  #size_0,
+  #size_1,
+  #size_2,
+  #color_0,
+  #color_1{
+    position: absolute;
+    opacity: 0;
+    margin-top: 25px;
+  }
+  .size_0,
+  .size_1,
+  .size_2{
+    display: inline-block;
+    border: 1px solid #7d7d7d;
+    border-radius: 15px;
+    margin: 0 7px;
+    padding: 12px 2px 10px;
+    width: 105px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    p{
+      font-style: normal;
+    }
+    .many{
+      font-weight: 600;
+    }
+  }
+  #size_0:checked ~ .size_0{
+    border-color: #0065ab;
+    box-shadow: inset 0 0 0 2px #0065ab;
+  }
+  #size_1:checked ~ .size_1{
+    border-color: #0065ab;
+    box-shadow: inset 0 0 0 2px #0065ab;
+  }
+  #size_2:checked ~ .size_2{
+    border-color: #0065ab;
+    box-shadow: inset 0 0 0 2px #0065ab;
+  }
+  .color_0,
+  .color_1{
+    display: inline-block;
+    margin: 25px 6px;
+    padding: 18px;
+    border-radius: 6px;
+    vertical-align: middle;
+    border: 3px solid;
+    border-color: #fff;
+    cursor: pointer;
+  }
+  .color_0{
+    background: #d29197;
+  }
+  .color_1{
+    background: #b20e2c;  }
+  #color_0:checked ~ .color_0{
+    box-shadow: 0 0 0 2px #0065ab;
+  }
+  #color_1:checked ~ .color_1{
+    box-shadow: 0 0 0 2px #0065ab;
+  }
+  .red{
+    display: inline-block;
+    margin-left: 6px;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .minus,
+  .plus{
+    display: inline-block;
+    border: 1px solid #0065ab;
+    border-radius: 50%;
+    color: #0065ab;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 1.375em;
+    vertical-align: middle;
+    margin: 0 7px;
+    line-height: 30px;
+  }
+  .quantity{
+    display: inline-block;
+    border: 1px solid #a4a4a4;
+    width: 54px;
+    height: 38px;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0;
+    line-height: 38px;
+    border-radius: 8px;
+  }
+  .save,
+  .add{
+    display: inline-block;
+    text-decoration: none;
+    color: #0065ab;
+    font-weight: 600;
+    border-radius: 4px;
+    border: 3px solid #0065ab;
+    margin-top: 38px;
+  }
+  .save{
+    padding: 3px;
+    margin-right: 14px;
+    div{
+      border: 2px solid #77add2;
+      border-radius: 4px;
+      padding: 10px 39px 10px 14px;
+      background: url(../img/save.png) no-repeat;
+      background-position: 90% center;
+    }
+  }
+  .add{
+    padding: 5px;
+    color: #fff;
+    div{
+      border: 2px solid #0065ab;
+      border-radius: 4px;
+      padding: 20px 72px 20px 86px;
+      background: #0065ab;
+      span{
+        background: url(../img/add.png) no-repeat;
+        background-position: center;
+        padding: 0px 22px;
+      }
+    }
+  }
+}
+.popup-wrap {
+  position: fixed;
+  display: none;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.popup-wrap.active {
+  display: block;
+}
+.popup-bg {
+  position: absolute;;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.popup-content {
+  position: absolute;
+  display: block;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 100px;
+  margin: -100px 0 0 -50px;
+  background: white;
+  border-radius: 10px;
+}
+.popup-close {
+  position: absolute;
+  display: block;
+  width: 30px;
+  height: 30px;
+  background: #ccc;
+  color: black;
+  border-radius: 100%;
+  font-size: 24px;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 30px;
+  text-align: center;
+  right: 5px;
+  top: 5px;
+}
+
+@media (max-width: 1024px){
+  .slider-for,
+  .content{
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px){
+  .slider-for,
+  .content{
+    width: 90%;
+    margin: auto;
+  }
+  .content{
+    .star_line{
+      .facebook,
+      .pint,
+      .massage{
+        margin: 0 20px;
+      }
+      .border_p{
+        margin-bottom: 20px;
+      }
+    }
+    .select{
+      display: block;
+      margin: 15px auto;
+    }
+    .color_0,
+    .color_1{
+      margin: 5px 6px;
+    }
+  }
+}
+
+@media (max-width: 440px){
+  .content{
+    .star_line{
+      .border_p{
+        padding-right: 6px;
+      }
+      .number{
+        margin-right: 2px;
+      }
+    }
+    .size_0,
+    .size_1,
+    .size_2{
+      margin: 7px;
+    }
+  }
+}
+
+@media (max-width: 360px){
+  .content{
+    .star_line{
+      .border_p{
+        border: 0;
+      }
+      p{
+        display: block;
+      }
+    }
+    .add{
+      div{
+        padding: 20px 52px 20px 66px;
+      }
+    }
+  }
+}
